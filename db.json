@@ -1,0 +1,32 @@
+{
+  "contacts": [
+    {
+      "id": "1",
+      "firstName": "vian",
+      "lastName": "alfalah",
+      "email": "vianalfalah@mail.co",
+      "phone": "1234567890",
+      "company": "SMBC",
+      "age": 28
+    },
+    {
+      "firstName": "alfalah",
+      "lastName": "gun",
+      "email": "alfalah@mail.co123",
+      "phone": "123",
+      "company": "123",
+      "age": 122123,
+      "id": "QHrIPc0MHvc"
+    },
+    {
+      "firstName": "asasd",
+      "lastName": "asdasd",
+      "email": "asdasd@mail.co",
+      "phone": "asdasd",
+      "company": "adsasd",
+      "age": 1231,
+      "id": "QJ_bZc4MDi4"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
