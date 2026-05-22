@@ -39,13 +39,24 @@ const ContactListPage = () => {
         fetchingData()
     }, [debouncedQuery])
 
-    useEffect(() => {
-        debounceFetching()
-    }, [query])
+    const debounceFetching = useMemo(
+        () =>
+            _.debounce((val: string) => {
+                setDebouncedQuery(val)
+            }, 500),
+        []
+    )
 
-    const debounceFetching = _.debounce(async () => {
-        setDebouncedQuery(query)
-    }, 500)
+    const handleSearch = (value: string) => {
+        setQuery(value)
+        debounceFetching(value)
+    }
+
+    // useEffect(() => {
+    //     return () => {
+    //         debounceFetching.cancel()
+    //     }
+    // }, [debounceFetching])
 
     // const filtered = useMemo(() => {
     //     const q = query.trim().toLowerCase();
@@ -82,6 +93,7 @@ const ContactListPage = () => {
                 setTimeout(() => {
                     toast.success("Contact deleted successfully")
                     setOpenModal({ isModalCrud: false, isModalDelete: false, dataModal: null })
+                    fetchingData()
                 }, 1000);
             }
         } catch (error: any) {
@@ -93,7 +105,10 @@ const ContactListPage = () => {
 
     return (
         <div className="min-h-screen">
-            <div className="mx-auto lg:flex max-w-5xl items-end justify-between gap-6 px-6 pb-8 pt-12 sm:pt-16">
+            <div className="text-center bg-yellow-400/30 border rounded-md mx-auto my-4 border-yellow-400 py-2 text-yellow-900">
+                Note : The provided API/documentation endpoint was unavailable during development, so I implemented a mock REST API using json-server to demonstrate full CRUD functionality and Redux state management. <br /> {"(You can check readme file for more details)"}
+            </div>
+            <div className="mx-auto lg:flex max-w-5xl items-end justify-between gap-6 px-6 pb-8">
                 <div className="">
                     <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">A quiet address book</p>
                     <h1 className="mt-3 text-5xl sm:text-6xl text-foreground">Contacts.</h1>
@@ -110,13 +125,13 @@ const ContactListPage = () => {
                     <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => handleSearch(e.target.value)}
                         placeholder="Search by name, email, phone or company…"
                         className="h-12 rounded-full border-border bg-surface pl-11 pr-4 text-sm shadow-none focus-visible:ring-accent"
                     />
                     {query && (
                         <button
-                            onClick={() => setQuery("")}
+                            onClick={() => handleSearch("")}
                             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground hover:bg-muted"
                             aria-label="Clear search"
                         >
@@ -147,7 +162,7 @@ const ContactListPage = () => {
                                     <div
                                         className={cn(`flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-display text-lg text-white ${avatarColor(`${c.firstName} ${c.lastName}`)}`)}
                                     >
-                                        {c.firstName[0]}{c.lastName[0]}
+                                        {c.firstName?.[0]}{c.lastName?.[0]}
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate font-display text-xl text-foreground">{c.firstName} {c.lastName}</p>
@@ -187,6 +202,7 @@ const ContactListPage = () => {
                 open={openModal.isModalCrud}
                 onClose={() => setOpenModal({ isModalCrud: false, isModalDelete: false, dataModal: null })}
                 dataModal={openModal.dataModal}
+                refetch={() => fetchingData()}
             />
         </div>
     )

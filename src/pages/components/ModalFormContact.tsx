@@ -10,7 +10,7 @@ import { addContact, editContact } from "@/store/contacts/contactsSlice";
 import type { Contact } from "@/store/contacts/contactsTypes";
 import { toast } from "sonner";
 
-const ModalFormContact = ({ open, dataModal, onClose }: any) => {
+const ModalFormContact = ({ open, dataModal, onClose, refetch }: any) => {
     const dispatch = useAppDispatch()
     const { errorAdd: error, loadingAdd: loading }: ContactsState = useAppSelector((state) => state.contacts)
     const [form, setForm] = useState<Partial<Contact> | null>(dataModal)
@@ -32,6 +32,7 @@ const ModalFormContact = ({ open, dataModal, onClose }: any) => {
                 setTimeout(() => {
                     toast.success(form?.id ? "Contact updated successfully" : "Contact added successfully")
                     onClose()
+                    refetch()
                 }, 1000);
             }
         } catch (error) {

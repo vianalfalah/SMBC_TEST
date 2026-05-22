@@ -1,21 +1,71 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import * as api from './contactsApi'
-import type { ContactsState } from './contactsTypes'
+import type { Contact, ContactsState } from './contactsTypes'
+import type { AxiosResponse } from 'axios'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+const dataMockLocal: Contact[] = [
+    {
+        "firstName": "vian",
+        "lastName": "alfalah",
+        "email": "vianalfa@mail.co",
+        "phone": "0123",
+        "company": "123",
+        "age": 122123,
+        "id": "QHrIPc0MHvc"
+    },
+    {
+        "firstName": "asasd",
+        "lastName": "asdasd",
+        "email": "asdasd@mail.co",
+        "phone": "asdasd",
+        "company": "adsasd",
+        "age": 1231,
+        "id": "QJ_bZc4MDi4"
+    }
+]
 
 export const fetchContacts = createAsyncThunk(
     'contacts/fetch',
     async (params: any) => {
         await delay(2000)
-        const res = await api.getContacts()
-        console.log(params)
-        if (params) {
-            const filtered = res.data.filter((item: any) =>
-                `${item.firstName} ${item.lastName} ${item.email} ${item.phone} ${item.company ?? ""}`.toLowerCase().includes(params?.trim().toLowerCase()))
-            return filtered
+        try {
+            const res: AxiosResponse | any = await api.getContacts()
+            if (res?.name === 'AxiosError') {
+                const dataLocal = localStorage.getItem('contacts')
+                if (!dataLocal) {
+                    localStorage.setItem('contacts', JSON.stringify(dataMockLocal))
+                    return dataMockLocal
+                }
+                if (params) {
+                    const filtered = JSON.parse(dataLocal).filter((item: any) =>
+                        `${item.firstName} ${item.lastName} ${item.email} ${item.phone} ${item.company ?? ""}`.toLowerCase().includes(params?.trim().toLowerCase()))
+                    return filtered
+                }
+                return JSON.parse(dataLocal)
+            } else {
+                if (params) {
+                    const filtered = res.data.filter((item: any) =>
+                        `${item.firstName} ${item.lastName} ${item.email} ${item.phone} ${item.company ?? ""}`.toLowerCase().includes(params?.trim().toLowerCase()))
+                    return filtered
+                }
+                return res.data
+            }
+        } catch (error) {
+            console.log(error)
+            const dataLocal = localStorage.getItem('contacts')
+            if (!dataLocal) {
+                localStorage.setItem('contacts', JSON.stringify(dataMockLocal))
+                return dataMockLocal
+            }
+            if (params) {
+                const filtered = JSON.parse(dataLocal).filter((item: any) =>
+                    `${item.firstName} ${item.lastName} ${item.email} ${item.phone} ${item.company ?? ""}`.toLowerCase().includes(params?.trim().toLowerCase()))
+                return filtered
+            }
+            return JSON.parse(dataLocal)
         }
-        return res.data
     }
 )
 
@@ -23,8 +73,19 @@ export const addContact = createAsyncThunk(
     'contacts/add',
     async (payload: any) => {
         await delay(1000)
-        const res = await api.createContact(payload)
-        return res.data
+        try {
+            const res: AxiosResponse | any = await api.createContact(payload)
+            if (res?.name === 'AxiosError') {
+                console.log(res?.message)
+            }
+            return res.data
+        } catch (error: any) {
+            const dataLocal = localStorage.getItem('contacts')
+            const newDataLocal: any[] = dataLocal ? JSON.parse(dataLocal) : []
+            newDataLocal.push({ ...payload, id: nanoid() })
+            localStorage.setItem('contacts', JSON.stringify(newDataLocal))
+            return newDataLocal
+        }
     }
 )
 
@@ -32,8 +93,23 @@ export const editContact = createAsyncThunk(
     'contacts/edit',
     async ({ id, payload }: any) => {
         await delay(1000)
-        const res = await api.updateContact(id, payload)
-        return res.data
+        try {
+            const res: AxiosResponse | any = await api.updateContact(id, payload)
+            if (res?.name === 'AxiosError') {
+                console.log(res?.message)
+            }
+            return res.data
+        } catch (error: any) {
+            const dataLocal = localStorage.getItem('contacts')
+            const newDataLocal: any[] = dataLocal ? JSON.parse(dataLocal) : []
+            const index = newDataLocal.findIndex((item: any) => item.id === id)
+            if (index !== -1) {
+                newDataLocal[index] = payload
+                localStorage.setItem('contacts', JSON.stringify(newDataLocal))
+                return newDataLocal
+            }
+            return newDataLocal
+        }
     }
 )
 
@@ -41,8 +117,23 @@ export const removeContact = createAsyncThunk(
     'contacts/remove',
     async (id: string) => {
         await delay(1000)
-        await api.deleteContact(id)
-        return id
+        try {
+            const res: AxiosResponse | any = await api.deleteContact(id)
+            if (res?.name === 'AxiosError') {
+                console.log(res?.message)
+            }
+            return res.data
+        } catch (error: any) {
+            const dataLocal = localStorage.getItem('contacts')
+            const newDataLocal: any[] = dataLocal ? JSON.parse(dataLocal) : []
+            const index = newDataLocal.findIndex((item: any) => item.id === id)
+            if (index !== -1) {
+                newDataLocal.splice(index, 1)
+                localStorage.setItem('contacts', JSON.stringify(newDataLocal))
+                return newDataLocal
+            }
+            return newDataLocal
+        }
     }
 )
 
@@ -80,7 +171,7 @@ const slice = createSlice({
                 state.errorAdd = null
             })
             .addCase(addContact.fulfilled, (state, action) => {
-                state.items.push(action.payload)
+                // state.items.push(action.payload)
                 state.loadingAdd = false
             })
             .addCase(addContact.rejected, (state, action) => {
@@ -93,10 +184,10 @@ const slice = createSlice({
                 state.errorAdd = null
             })
             .addCase(editContact.fulfilled, (state, action) => {
-                const index = state.items.findIndex(
-                    item => item.id === action.payload.id
-                )
-                if (index !== -1) state.items[index] = action.payload
+                // const index = state.items.findIndex(
+                //     item => item.id === action.payload.id
+                // )
+                // if (index !== -1) state.items[index] = action.payload
                 state.loadingAdd = false
             })
             .addCase(editContact.rejected, (state, action) => {
@@ -109,9 +200,9 @@ const slice = createSlice({
                 state.errorDelete = null
             })
             .addCase(removeContact.fulfilled, (state, action) => {
-                state.items = state.items.filter(
-                    item => item.id !== action.payload
-                )
+                // state.items = state.items.filter(
+                //     item => item.id !== action.payload
+                // )
                 state.loadingDelete = false
             })
             .addCase(removeContact.rejected, (state, action) => {

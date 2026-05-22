@@ -6,7 +6,7 @@ export interface Contact {
     phone: string
     company: string
     age: number
-    photo: string
+    photo?: string
 }
 
 export interface ContactsState {

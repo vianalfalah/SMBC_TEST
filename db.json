@@ -19,13 +19,11 @@
       "id": "QHrIPc0MHvc"
     },
     {
-      "firstName": "asasd",
-      "lastName": "asdasd",
-      "email": "asdasd@mail.co",
-      "phone": "asdasd",
-      "company": "adsasd",
-      "age": 1231,
-      "id": "QJ_bZc4MDi4"
+      "firstName": "test mock api",
+      "lastName": "v2",
+      "email": "vianalfalah@gmail.com",
+      "phone": "3424",
+      "id": "CEvEpruI0GU"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
