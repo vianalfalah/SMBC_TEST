@@ -5,7 +5,7 @@
       "firstName": "vian",
       "lastName": "alfalah",
       "email": "vianalfalah@mail.co",
-      "phone": "1234567890",
+      "phone": 898989823,
       "company": "SMBC",
       "age": 28
     },
@@ -13,7 +13,7 @@
       "firstName": "alfalah",
       "lastName": "gun",
       "email": "alfalah@mail.co123",
-      "phone": "123",
+      "phone": 1212313,
       "company": "123",
       "age": 122123,
       "id": "QHrIPc0MHvc"
@@ -22,8 +22,19 @@
       "firstName": "test mock api",
       "lastName": "v2",
       "email": "vianalfalah@gmail.com",
-      "phone": "3424",
-      "id": "CEvEpruI0GU"
+      "phone": 121234,
+      "id": "CEvEpruI0GU",
+      "age": 12,
+      "company": "smbc"
+    },
+    {
+      "firstName": "test ",
+      "lastName": "lagi",
+      "email": "test@mail.co",
+      "phone": 89893283,
+      "company": "",
+      "age": 34,
+      "id": "PwhjncoI1Ew"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
