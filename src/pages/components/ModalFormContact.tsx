@@ -53,9 +53,9 @@ const ModalFormContact = ({ open, dataModal, onClose, refetch }: any) => {
                         <Field label="Last name" value={form?.lastName ?? ""} onChange={(v) => setForm({ ...form, lastName: v } as any)} />
                     </div>
                     <Field label="Email" type="email" required value={form?.email ?? ""} onChange={(v) => setForm({ ...form, email: v } as any)} />
-                    <Field label="Phone" value={form?.phone ?? ""} onChange={(v) => setForm({ ...form, phone: v } as any)} />
+                    <Field label="Phone" type="number" value={form?.phone !== undefined && form?.phone !== null ? String(form.phone) : ""} onChange={(v) => setForm({ ...form, phone: v ? Number(v) : 0 } as any)} />
                     <Field label="Company" value={form?.company ?? ""} onChange={(v) => setForm({ ...form, company: v } as any)} />
-                    <Field label="Age" type="number" value={form?.age !== undefined && form?.age !== null ? String(form.age) : ""} onChange={(v) => setForm({ ...form, age: v ? Number(v) : 0 } as any)} />
+                    <Field label="Age" max={120} min={1} type="number" value={form?.age !== undefined && form?.age !== null ? String(form.age) : ""} onChange={(v) => setForm({ ...form, age: v ? Number(v) : 0 } as any)} />
                     <DialogFooter>
                         <Button type="button" variant="ghost" onClick={onClose}>Cancel</Button>
                         <Button type="submit" disabled={loading} className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -72,16 +72,17 @@ const ModalFormContact = ({ open, dataModal, onClose, refetch }: any) => {
 export default ModalFormContact
 
 function Field({
-    label, value, onChange, type = "text", required = false,
+    label, value, onChange, type = "text", required = false, max, min
 }: {
     label: string; value: string; onChange: (v: string) => void; type?: string; required?: boolean;
+    max?: number; min?: number;
 }) {
     return (
         <div className="space-y-1.5">
             <Label className="text-xs uppercase tracking-wider text-muted-foreground">
                 {label}{required && <span className="text-accent"> *</span>}
             </Label>
-            <Input type={type} value={value} required={required} onChange={(e) => onChange(e.target.value)} className="h-10" />
+            <Input type={type} value={value} required={required} onChange={(e) => onChange(e.target.value)} className="h-10" {...(max && { max })} {...(min && { min })} />
         </div>
     );
 }

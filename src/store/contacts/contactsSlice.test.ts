@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { configureStore } from '@reduxjs/toolkit'
 import * as api from './contactsApi'
-import reducer, { fetchContacts, addContact, editContact, removeContact } from './contactsSlice'
+import reducer, { fetchContacts, addContact, editContact, removeContact, dataMockLocal } from './contactsSlice'
 import type { Contact } from './contactsTypes'
 
 vi.mock('./contactsApi', () => ({
@@ -12,27 +12,6 @@ vi.mock('./contactsApi', () => ({
 }))
 
 const mockApi = api as any
-
-const dataMockLocal: Contact[] = [
-  {
-    firstName: "vian",
-    lastName: "alfalah",
-    email: "vianalfa@mail.co",
-    phone: "0123",
-    company: "123",
-    age: 122123,
-    id: "QHrIPc0MHvc",
-  },
-  {
-    firstName: "asasd",
-    lastName: "asdasd",
-    email: "asdasd@mail.co",
-    phone: "asdasd",
-    company: "adsasd",
-    age: 1231,
-    id: "QJ_bZc4MDi4",
-  },
-]
 
 describe('contactsSlice', () => {
   let store: any

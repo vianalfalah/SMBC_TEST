@@ -5,23 +5,23 @@ import type { AxiosResponse } from 'axios'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const dataMockLocal: Contact[] = [
+export const dataMockLocal: Contact[] = [
     {
         "firstName": "vian",
         "lastName": "alfalah",
         "email": "vianalfa@mail.co",
-        "phone": "0123",
+        "phone": 891233,
         "company": "123",
-        "age": 122123,
+        "age": 24,
         "id": "QHrIPc0MHvc"
     },
     {
-        "firstName": "asasd",
-        "lastName": "asdasd",
-        "email": "asdasd@mail.co",
-        "phone": "asdasd",
-        "company": "adsasd",
-        "age": 1231,
+        "firstName": "galih",
+        "lastName": "prakoso",
+        "email": "galihprakoso@mail.co",
+        "phone": 231123,
+        "company": "smbc",
+        "age": 31,
         "id": "QJ_bZc4MDi4"
     }
 ]
