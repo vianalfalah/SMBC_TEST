@@ -156,7 +156,7 @@ describe('contactsSlice', () => {
       const updated = { id: '1', firstName: 'John', lastName: 'Updated' }
       mockApi.updateContact.mockResolvedValue({ data: updated })
 
-      const promise = store.dispatch(editContact({ id: '1', payload: updated }))
+      const promise = store.dispatch(editContact(updated))
       vi.advanceTimersByTime(1000)
       await promise
 
@@ -172,7 +172,7 @@ describe('contactsSlice', () => {
       localStorage.setItem('contacts', JSON.stringify(existing))
 
       const updated = { id: '1', firstName: 'John', lastName: 'Modified', email: 'john@example.com', phone: '1234', company: 'ABC', age: 30 }
-      const promise = store.dispatch(editContact({ id: '1', payload: updated }))
+      const promise = store.dispatch(editContact(updated))
       vi.advanceTimersByTime(1000)
       await promise
 

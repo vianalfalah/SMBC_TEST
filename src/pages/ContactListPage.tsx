@@ -153,28 +153,28 @@ const ContactListPage = () => {
                     </div>
                 ) : (
                     <ul className="grid gap-3 sm:grid-cols-2">
-                        {items.map((c) => (
+                        {items.length > 0 && items.map((c) => (
                             <li
-                                key={c.id}
+                                key={c?.id}
                                 className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-5 transition-all hover:border-accent/40 hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)]"
                             >
                                 <div className="flex items-start gap-4">
                                     <div
-                                        className={cn(`flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-display text-lg text-white ${avatarColor(`${c.firstName} ${c.lastName}`)}`)}
+                                        className={cn(`flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-display text-lg text-white ${avatarColor(`${c?.firstName} ${c?.lastName}`)}`)}
                                     >
-                                        {c.firstName?.[0]}{c.lastName?.[0]}
+                                        {c?.firstName?.[0]}{c?.lastName?.[0]}
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate font-display text-xl text-foreground">{c.firstName} {c.lastName}</p>
-                                        {c.company && (
+                                        <p className="truncate font-display text-xl text-foreground">{c?.firstName} {c?.lastName}</p>
+                                        {c?.company && (
                                             <p className="mt-0.5 flex items-center gap-1.5 truncate text-xs text-muted-foreground">
-                                                <Building2 className="h-3 w-3" /> {c.company}
+                                                <Building2 className="h-3 w-3" /> {c?.company}
                                             </p>
                                         )}
                                         <div className="mt-3 space-y-1.5 text-sm text-foreground/80">
-                                            <p className="flex items-center gap-2 truncate"><Mail className="h-3.5 w-3.5 text-muted-foreground" /> {c.email}</p>
-                                            <p className="flex items-center gap-2 truncate"><Phone className="h-3.5 w-3.5 text-muted-foreground" /> {c.phone}</p>
-                                            <p className="flex items-center gap-2 truncate"><Cake className="h-3.5 w-3.5 text-muted-foreground" /> {c.age}</p>
+                                            <p className="flex items-center gap-2 truncate"><Mail className="h-3.5 w-3.5 text-muted-foreground" /> {c?.email}</p>
+                                            <p className="flex items-center gap-2 truncate"><Phone className="h-3.5 w-3.5 text-muted-foreground" /> {c?.phone}</p>
+                                            <p className="flex items-center gap-2 truncate"><Cake className="h-3.5 w-3.5 text-muted-foreground" /> {c?.age}</p>
                                         </div>
                                     </div>
                                 </div>

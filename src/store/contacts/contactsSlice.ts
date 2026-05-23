@@ -91,8 +91,9 @@ export const addContact = createAsyncThunk(
 
 export const editContact = createAsyncThunk(
     'contacts/edit',
-    async ({ id, payload }: any) => {
+    async (payload: any) => {
         await delay(1000)
+        const id = payload.id
         try {
             const res: AxiosResponse | any = await api.updateContact(id, payload)
             if (res?.name === 'AxiosError') {
@@ -103,6 +104,7 @@ export const editContact = createAsyncThunk(
             const dataLocal = localStorage.getItem('contacts')
             const newDataLocal: any[] = dataLocal ? JSON.parse(dataLocal) : []
             const index = newDataLocal.findIndex((item: any) => item.id === id)
+            console.log(index)
             if (index !== -1) {
                 newDataLocal[index] = payload
                 localStorage.setItem('contacts', JSON.stringify(newDataLocal))
