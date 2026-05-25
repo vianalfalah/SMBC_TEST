@@ -8,7 +8,7 @@ const ModalDelete = ({ open, dataModal, onClose, confirmDelete, loadingDelete }:
                 <AlertDialogHeader>
                     <AlertDialogTitle className="font-display text-2xl">Delete this contact?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        {dataModal && `${dataModal.firstName} ${dataModal.lastName} will be removed from your address book. This can't be undone.`}
+                        {dataModal && `${dataModal.name.first} ${dataModal.name.last} will be removed from your address book. This can't be undone.`}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
