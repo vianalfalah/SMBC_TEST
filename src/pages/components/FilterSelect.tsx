@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function FilterSelect({ data, value, onChange, placeholder }: { data: { name: string, value: string }[], value: { name: string, value: string }, onChange: (val: { name: string, value: string }) => void, placeholder?: string }) {
+export function FilterSelect({ data, value, onChange, placeholder }: { data: { name: string, value: string }[], value: { name: string, value: string } | null | undefined, onChange: (val: { name: string, value: string }) => void, placeholder?: string }) {
 
   return (
     <Select value={value?.value} onValueChange={(val) => onChange(data.find((item) => item.value === val) || {name: "", value: ""})}>
